@@ -108,7 +108,7 @@
 // CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
 // CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
 // CH_PIT_TRIM, CH_RLL_TRIM
-#define RATES 1
+#define RATES CH_EXPERT // 5 on devo
 
 
 // level / acro mode switch
@@ -128,15 +128,15 @@
 // CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
 // CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
 // CH_PIT_TRIM, CH_RLL_TRIM
-#define LEVELMODE CH_AUX1
+#define LEVELMODE CH_RTH //10 on devo
 
 // channel to initiate automatic flip
-#define STARTFLIP CH_FLIP
+#define STARTFLIP CH_FLIP //6 on devo
 
 
 
 // aux1 channel starts on if this is defined, otherwise off.
-#define AUX1_START_ON
+//#define AUX1_START_ON
 
 // use yaw/pitch instead of roll/pitch for gestures
 //#define GESTURES_USE_YAW
@@ -210,16 +210,16 @@
 
 // motor curve to use
 // the pwm frequency has to be set independently
-#define MOTOR_CURVE_NONE
+//#define MOTOR_CURVE_NONE
 //#define MOTOR_CURVE_6MM_490HZ
-//#define MOTOR_CURVE_85MM_8KHZ
+#define MOTOR_CURVE_85MM_8KHZ
 //#define MOTOR_CURVE_85MM_32KHZ
 
 // pwm frequency for motor control
 // a higher frequency makes the motors more linear
 //#define PWM_490HZ
-//#define PWM_8KHZ
-#define PWM_16KHZ
+#define PWM_8KHZ
+//#define PWM_16KHZ
 //#define PWM_24KHZ
 //#define PWM_32KHZ
 
