@@ -108,7 +108,7 @@
 // CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
 // CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
 // CH_PIT_TRIM, CH_RLL_TRIM
-#define RATES 1
+#define RATES CH_EXPERT
 
 
 // level / acro mode switch
@@ -128,7 +128,7 @@
 // CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
 // CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
 // CH_PIT_TRIM, CH_RLL_TRIM
-#define LEVELMODE CH_AUX1
+#define LEVELMODE CH_RTH
 
 // channel to initiate automatic flip
 #define STARTFLIP CH_FLIP
@@ -136,7 +136,7 @@
 
 
 // aux1 channel starts on if this is defined, otherwise off.
-#define AUX1_START_ON
+//#define AUX1_START_ON
 
 // use yaw/pitch instead of roll/pitch for gestures
 //#define GESTURES_USE_YAW
