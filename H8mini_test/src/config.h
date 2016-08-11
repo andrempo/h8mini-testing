@@ -201,7 +201,7 @@
 
 
 // clip feedforward attempts to resolve issues that occur near full throttle
-//#define CLIP_FF
+#define CLIP_FF
 
 // motor transient correction applied	to throttle stick
 //#define THROTTLE_TRANSIENT_COMPENSATION
