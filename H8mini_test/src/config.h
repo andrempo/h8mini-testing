@@ -8,8 +8,6 @@
 // not including the "f" after float numbers will give a warning
 // it will still work
 
-
-
 // rate in deg/sec
 // for low rates ( acro mode)
 #define MAX_RATE 180.0f
@@ -30,27 +28,22 @@
 #define LEVEL_MAX_RATE_LO 360.0f
 #define LEVEL_MAX_RATE_HI 360.0f
 
-
-
 // disable inbuilt expo functions
 #define DISABLE_EXPO
 
 // use if your tx has no expo function
 // also comment out DISABLE_EXPO to use
 // -1 to 1 , 0 = no exp
-// positive = less sensitive near center 
+// positive = less sensitive near center
 #define EXPO_XY 0.3f
 #define EXPO_YAW 0.0f
 
-
-
-
 // Hardware gyro LPF filter frequency
-// gyro filter 0 = 260hz
-// gyro filter 1 = 184hz
-// gyro filter 2 = 94hz
-// gyro filter 3 = 42hz
-// 4 , 5, 6
+// gyro filter 0 = 250hz delay 0.97mS
+// gyro filter 1 = 184hz delay 2.9mS
+// gyro filter 2 = 92hz delay 3.9mS
+// gyro filter 3 = 41hz delay 5.9mS (Default)
+// gyro filter 4 = 20hz
 #define GYRO_LOW_PASS_FILTER 3
 
 // software gyro lpf ( iir )
@@ -69,31 +62,29 @@
 // on older boards the hw gyro setting controls the acc as well
 #define ACC_LOW_PASS_FILTER 5
 
+// Channel assignments
+//
 
-
+// CH_FLIP - 0 - flip
+// CH_EXPERT - 1 - expert
+// CH_HEADFREE - 2 - headfree
+// CH_RTH - 3 - headingreturn
+// CH_AUX1 - 4 - AUX1 ( gestures <<v and >>v)
+// CH_AUX2 - 5 - AUX2+ (  up - up - up    )
+// CH_PIT_TRIM - 6 - Pitch trims
+// CH_RLL_TRIM - 7 - Roll trims
+// CH_THR_TRIM - 8 - Throttle trims
+// CH_YAW_TRIM - 9 - Yaw trims
+// CH_ON - 10 - on always
+// CH_OFF - 11 - off always
+//
+// devo can use DEVO_CHAN_5 - DEVO_CHAN_10
 
 // Headless mode
-// Only in acro mode
-// 0 - flip 
-// 1 - expert
-// 2 - headfree
-// 3 - headingreturn
-// 4 - AUX1 ( gestures <<v and >>v)
-// 5 - AUX2+ (  none    )
-// 6 - Pitch trims
-// 7 - Roll trims
-// 8 - Throttle trims
-// 9 - Yaw trims
-// 10 - on always
-// 11 - off always
-// CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
-// CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
-// CH_PIT_TRIM, CH_RLL_TRIM, CH_THR_TRIM, CH_YAW_TRIM
 #define HEADLESSMODE CH_OFF
 
-
 // rates / expert mode
-// 0 - flip 
+// 0 - flip
 // 1 - expert
 // 2 - headfree
 // 3 - headingreturn
@@ -110,10 +101,9 @@
 // CH_PIT_TRIM, CH_RLL_TRIM
 #define RATES CH_EXPERT
 
-
 // level / acro mode switch
 // CH_AUX1 = gestures
-// 0 - flip 
+// 0 - flip
 // 1 - expert
 // 2 - headfree
 // 3 - headingreturn
@@ -128,12 +118,10 @@
 // CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
 // CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
 // CH_PIT_TRIM, CH_RLL_TRIM
-#define LEVELMODE CH_RTH
+#define LEVELMODE CH_AUX1
 
 // channel to initiate automatic flip
 #define STARTFLIP CH_FLIP
-
-
 
 // aux1 channel starts on if this is defined, otherwise off.
 //#define AUX1_START_ON
@@ -141,7 +129,9 @@
 // use yaw/pitch instead of roll/pitch for gestures
 //#define GESTURES_USE_YAW
 
-// comment out if not using ( disables trim as channels, will still work with stock tx except that feature )
+// comment out if not using ( disables trim as channels, will still work with
+// stock tx except that feature )
+// devo/tx module incompatible
 //#define USE_STOCK_TX
 
 // automatically remove center bias ( needs throttle off for 1 second )
@@ -151,30 +141,16 @@
 // comment out to disable
 //#define AUTO_THROTTLE
 
-// enable auto throttle  in acro mode if enabled above
-// should be used if no flipping is performed
-// 0 / 1 ( off / on )
-#define AUTO_THROTTLE_ACRO_MODE 0
-
-
 // enable auto lower throttle near max throttle to keep control
 // comment out to disable
-//#define MIX_LOWER_THROTTLE
-
-// options for mix throttle lowering if enabled
-// 0 - 100 range ( 100 = full reduction / 0 = no reduction )
-#define MIX_THROTTLE_REDUCTION_PERCENT 100
-// lpf (exponential) shape if on, othewise linear
-//#define MIX_THROTTLE_FILTER_LPF
-
-
+#define MIX_LOWER_THROTTLE
 
 // battery saver ( only at powerup )
 // does not start software if battery is too low
 // flashes 2 times repeatedly at startup
 #define STOP_LOWBATTERY
 
-// under this voltage the software will not start 
+// under this voltage the software will not start
 // if STOP_LOWBATTERY is defined above
 #define STOP_LOWBATTERY_TRESH 3.3f
 
@@ -192,21 +168,22 @@
 // in volts
 #define HYST 0.10f
 
-
-
+// lower throttle to keep voltage above set treshold
+//#define LVC_PREVENT_RESET
+#define LVC_PREVENT_RESET_VOLTAGE 2.85
 
 // enable motor filter
 // hanning 3 sample fir filter
 #define MOTOR_FILTER
 
+// lost quad beeps using motors
+//#define MOTOR_BEEPS
 
 // clip feedforward attempts to resolve issues that occur near full throttle
 #define CLIP_FF
 
 // motor transient correction applied	to throttle stick
 //#define THROTTLE_TRANSIENT_COMPENSATION
-
-
 
 // motor curve to use
 // the pwm frequency has to be set independently
@@ -226,8 +203,7 @@
 //#define PWM_32KHZ
 
 // failsafe time in uS
-#define FAILSAFETIME 1000000  // one second
-
+#define FAILSAFETIME 1000000 // one second
 
 // level mode "manual" trims ( in degrees)
 // pitch positive forward
@@ -235,58 +211,58 @@
 #define TRIM_PITCH 0.0
 #define TRIM_ROLL 0.0
 
-
-
+// enable "bluetooth low energy" beacon
+#define BLUETOOTH_ENABLE
+//#define USE_IBEACON
 
 // ########################################
 // things that are experimental / old / etc
 // do not change things below
 
-// invert yaw pid for hubsan motors
+// invert yaw pid
 //#define INVERT_YAW_PID
 
-//some debug stuff
+// some debug stuff
 //#define DEBUG
 
 // disable motors for testing
 //#define NOMOTORS
 
+// throttle direct to motors for thrust measure/ esc testing
+//#define MOTORS_TO_THROTTLE
+
 // enable serial out on back-left LED
 //#define SERIAL
-
 
 // enable motors if pitch / roll controls off center (at zero throttle)
 // possible values: 0 / 1
 #define ENABLESTIX 0
 #define ENABLESTIX_TRESHOLD 0.3
 
+// old calibration flash
+#define OLD_LED_FLASH
+
+// options for mix throttle lowering if enabled
+// 0 - 100 range ( 100 = full reduction / 0 = no reduction )
+#define MIX_THROTTLE_REDUCTION_PERCENT 100
+// lpf (exponential) shape if on, othewise linear
+//#define MIX_THROTTLE_FILTER_LPF
+
+// limit minimum motor output to a value (0.0 - 1.0)
+//#define MOTOR_MIN_ENABLE
+#define MOTOR_MIN_VALUE 0.05
+
+// limit max motor output to a value (0.0 - 1.0)
+//#define MOTOR_MAX_ENABLE
+#define MOTOR_MAX_VALUE 1.00
+
+// do not change
 // only for compilers other than gcc
 #ifndef __GNUC__
 
-#pragma diag_warning 1035 , 177 , 4017
+#pragma diag_warning 1035, 177, 4017
 
-#pragma diag_error 260 
+#pragma diag_error 260
 
 #endif
 // --fpmode=fast ON
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
