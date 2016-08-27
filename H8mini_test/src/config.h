@@ -53,10 +53,10 @@
 //#define SOFT_LPF_1ST_100HZ
 //#define SOFT_LPF_2ND_043HZ
 //#define SOFT_LPF_2ND_088HZ
-//#define SOFT_LPF_4TH_088HZ
+#define SOFT_LPF_4TH_088HZ
 //#define SOFT_LPF_4TH_160HZ
 //#define SOFT_LPF_4TH_250HZ
-#define SOFT_LPF_NONE
+//#define SOFT_LPF_NONE
 
 // this works only on newer boards (non mpu-6050)
 // on older boards the hw gyro setting controls the acc as well
@@ -118,7 +118,7 @@
 // CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
 // CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
 // CH_PIT_TRIM, CH_RLL_TRIM
-#define LEVELMODE CH_AUX1
+#define LEVELMODE CH_RTH
 
 // channel to initiate automatic flip
 #define STARTFLIP CH_FLIP
@@ -188,17 +188,17 @@
 // motor curve to use
 // the pwm frequency has to be set independently
 // 720 motors use curve none and pwm 8K
-#define MOTOR_CURVE_NONE
+//#define MOTOR_CURVE_NONE
 //#define MOTOR_CURVE_6MM_490HZ
-//#define MOTOR_CURVE_85MM_8KHZ
+#define MOTOR_CURVE_85MM_8KHZ
 //#define MOTOR_CURVE_85MM_8KHZ_OLD
 //#define MOTOR_CURVE_85MM_32KHZ
 
 // pwm frequency for motor control
 // a higher frequency makes the motors more linear
 //#define PWM_490HZ
-//#define PWM_8KHZ
-#define PWM_16KHZ
+#define PWM_8KHZ
+//#define PWM_16KHZ
 //#define PWM_24KHZ
 //#define PWM_32KHZ
 
@@ -213,7 +213,7 @@
 
 // enable "bluetooth low energy" beacon
 #define BLUETOOTH_ENABLE
-//#define USE_IBEACON
+#define USE_IBEACON
 
 // ########################################
 // things that are experimental / old / etc
