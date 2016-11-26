@@ -8,8 +8,6 @@
 // not including the "f" after float numbers will give a warning
 // it will still work
 
-
-
 // rate in deg/sec
 // for low rates ( acro mode)
 #define MAX_RATE 180.0f
@@ -30,20 +28,15 @@
 #define LEVEL_MAX_RATE_LO 360.0f
 #define LEVEL_MAX_RATE_HI 360.0f
 
-
-
 // disable inbuilt expo functions
 #define DISABLE_EXPO
 
 // use if your tx has no expo function
 // also comment out DISABLE_EXPO to use
 // -1 to 1 , 0 = no exp
-// positive = less sensitive near center 
+// positive = less sensitive near center
 #define EXPO_XY 0.3f
 #define EXPO_YAW 0.0f
-
-
-
 
 // Hardware gyro LPF filter frequency
 // gyro filter 0 = 250hz delay 0.97mS
@@ -60,22 +53,19 @@
 //#define SOFT_LPF_1ST_100HZ
 //#define SOFT_LPF_2ND_043HZ
 //#define SOFT_LPF_2ND_088HZ
-//#define SOFT_LPF_4TH_088HZ
+#define SOFT_LPF_4TH_088HZ
 //#define SOFT_LPF_4TH_160HZ
 //#define SOFT_LPF_4TH_250HZ
-#define SOFT_LPF_NONE
+//#define SOFT_LPF_NONE
 
 // this works only on newer boards (non mpu-6050)
 // on older boards the hw gyro setting controls the acc as well
 #define ACC_LOW_PASS_FILTER 5
 
-
-
 // Channel assignments
 //
 
-
-// CH_FLIP - 0 - flip 
+// CH_FLIP - 0 - flip
 // CH_EXPERT - 1 - expert
 // CH_HEADFREE - 2 - headfree
 // CH_RTH - 3 - headingreturn
@@ -94,10 +84,41 @@
 #define HEADLESSMODE CH_OFF
 
 // rates / expert mode
+// 0 - flip
+// 1 - expert
+// 2 - headfree
+// 3 - headingreturn
+// 4 - AUX1 ( gestures <<v and >>v)
+// 5 - AUX2+ (  none    )
+// 6 - Pitch trims
+// 7 - Roll trims
+// 8 - Throttle trims
+// 9 - Yaw trims
+// 10 - on always
+// 11 - off always
+// CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
+// CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
+// CH_PIT_TRIM, CH_RLL_TRIM
 #define RATES CH_EXPERT
 
 // level / acro mode switch
-#define LEVELMODE CH_AUX1
+// CH_AUX1 = gestures
+// 0 - flip
+// 1 - expert
+// 2 - headfree
+// 3 - headingreturn
+// 4 - AUX1 ( gestures <<v and >>v)
+// 5 - AUX2+ (  none    )
+// 6 - Pitch trims
+// 7 - Roll trims
+// 8 - Throttle trims
+// 9 - Yaw trims
+// 10 - on always
+// 11 - off always
+// CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
+// CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
+// CH_PIT_TRIM, CH_RLL_TRIM
+#define LEVELMODE CH_RTH
 
 // channel to initiate automatic flip
 #define STARTFLIP CH_FLIP
@@ -105,27 +126,23 @@
 // leds on / off channel
 #define LEDS_ON CH_ON
 
-
-
-
 // aux1 channel starts on if this is defined, otherwise off.
-#define AUX1_START_ON
+//#define AUX1_START_ON
 
 // use yaw/pitch instead of roll/pitch for gestures
 //#define GESTURES_USE_YAW
 
-// comment out if not using ( disables trim as channels, will still work with stock tx except that feature )
+// comment out if not using ( disables trim as channels, will still work with
+// stock tx except that feature )
 // devo/tx module incompatible
 //#define USE_STOCK_TX
 
 // automatically remove center bias ( needs throttle off for 1 second )
 //#define STOCK_TX_AUTOCENTER
 
-
 // throttle angle compensation in level mode
 // comment out to disable
 //#define AUTO_THROTTLE
-
 
 // enable auto lower throttle near max throttle to keep control
 // comment out to disable
@@ -164,7 +181,6 @@
 //#define LVC_PREVENT_RESET
 #define LVC_PREVENT_RESET_VOLTAGE 2.85
 
-
 // enable motor filter
 // hanning 3 sample fir filter
 #define MOTOR_FILTER
@@ -173,33 +189,30 @@
 //#define MOTOR_BEEPS
 
 // clip feedforward attempts to resolve issues that occur near full throttle
-//#define CLIP_FF
+#define CLIP_FF
 
 // motor transient correction applied	to throttle stick
 //#define THROTTLE_TRANSIENT_COMPENSATION
 
-
-
 // motor curve to use
 // the pwm frequency has to be set independently
 // 720 motors use curve none and pwm 8K
-#define MOTOR_CURVE_NONE
+//#define MOTOR_CURVE_NONE
 //#define MOTOR_CURVE_6MM_490HZ
-//#define MOTOR_CURVE_85MM_8KHZ
+#define MOTOR_CURVE_85MM_8KHZ
 //#define MOTOR_CURVE_85MM_8KHZ_OLD
 //#define MOTOR_CURVE_85MM_32KHZ
 
 // pwm frequency for motor control
 // a higher frequency makes the motors more linear
 //#define PWM_490HZ
-//#define PWM_8KHZ
-#define PWM_16KHZ
+#define PWM_8KHZ
+//#define PWM_16KHZ
 //#define PWM_24KHZ
 //#define PWM_32KHZ
 
 // failsafe time in uS
-#define FAILSAFETIME 1000000  // one second
-
+#define FAILSAFETIME 1000000 // one second
 
 // uncomment to enable buzzer
 //#define BUZZER_ENABLE
@@ -214,10 +227,10 @@
 #define TRIM_PITCH 0.0
 #define TRIM_ROLL 0.0
 
-
 // enable "bluetooth low energy" beacon
 #define BLUETOOTH_ENABLE
 //#define USE_IBEACON
+
 
 
 
@@ -237,7 +250,7 @@
 // invert yaw pid
 //#define INVERT_YAW_PID
 
-//some debug stuff
+// some debug stuff
 //#define DEBUG
 
 // disable motors for testing
@@ -248,7 +261,6 @@
 
 // enable serial out on back-left LED
 //#define SERIAL
-
 
 // enable motors if pitch / roll controls off center (at zero throttle)
 // possible values: 0 / 1
@@ -265,6 +277,7 @@
 // limit max motor output to a value (0.0 - 1.0)
 //#define MOTOR_MAX_ENABLE
 #define MOTOR_MAX_VALUE 1.00
+
 
 // under this voltage the software will not start 
 // if STOP_LOWBATTERY is defined
@@ -294,6 +307,7 @@
 
 #endif
 // --fpmode=fast ON
+
 
 
 
