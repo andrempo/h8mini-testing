@@ -31,26 +31,41 @@ THE SOFTWARE.
 
 #include "gd32f1x0.h"
 
+#include "config.h"
 #include "led.h"
 #include "util.h"
 #include "sixaxis.h"
 #include "drv_adc.h"
 #include "drv_time.h"
 #include "drv_softi2c.h"
-#include "config.h"
 #include "drv_pwm.h"
 #include "drv_adc.h"
 #include "drv_gpio.h"
+#include "drv_rgb.h"
 #include "drv_serial.h"
 #include "rx_bayang.h"
 #include "drv_spi.h"
 #include "control.h"
 #include "defines.h"
 #include "drv_i2c.h"
-
+#include "buzzer.h"
 #include "binary.h"
+#include <math.h>
+#include "hardware.h"
 
 #include <inttypes.h>
+
+
+
+#ifdef __GNUC__
+// gcc warnings and fixes
+#ifdef AUTO_VDROP_FACTOR
+	#undef AUTO_VDROP_FACTOR
+	#warning #define AUTO_VDROP_FACTOR not working with gcc, using fixed factor
+#endif
+#endif
+
+
 
 // hal
 void clk_init(void);
@@ -76,6 +91,8 @@ unsigned long ledcommandtime = 0;
 int lowbatt = 0;
 float vbatt = 4.2;
 float vbattfilt = 4.2;
+
+extern char aux[AUXNUMBER];
 
 #ifdef DEBUG
 unsigned long elapsedtime;
@@ -175,6 +192,8 @@ int main(void)
 
 	gyro_cal();
 
+	rgb_init();
+	
 	imu_init();
 	
 	extern unsigned int liberror;
@@ -229,7 +248,6 @@ int main(void)
 
 // battery low logic
 				
-		static int lowbatt = 0;
 		float hyst;
 		float battadc = adc_read(1);
 vbatt = battadc;
@@ -242,6 +260,49 @@ vbatt = battadc;
 		
 		lpf ( &vbattfilt , battadc , 0.9968f);		
 
+#ifdef AUTO_VDROP_FACTOR
+
+static float lastout[12];
+static float lastin[12];
+static float vcomp[12];
+static float score[12];
+static int current_index = 0;
+
+int minindex = 0;
+float min = score[0];
+
+{
+	int i = current_index;
+
+	vcomp[i] = vbattfilt + (float) i *0.1f * thrfilt;
+		
+	if ( lastin[i] < 0.1f ) lastin[i] = vcomp[i];
+	float temp;
+	//	y(n) = x(n) - x(n-1) + R * y(n-1) 
+	//  out = in - lastin + coeff*lastout
+		// hpf
+	 temp = vcomp[i] - lastin[i] + FILTERCALC( 1000*12 , 1000e3) *lastout[i];
+		lastin[i] = vcomp[i];
+		lastout[i] = temp;
+	 lpf ( &score[i] , fabsf(temp) , FILTERCALC( 1000*12 , 10e6 ) );
+
+	}
+	current_index++;
+	if ( current_index >= 12 ) current_index = 0;
+
+	for ( int i = 0 ; i < 12; i++ )
+	{
+	 if ( score[i] < min )  
+		{
+			min = score[i];
+			minindex = i;
+		}
+}
+
+#undef VDROP_FACTOR
+#define VDROP_FACTOR  minindex * 0.1f
+#endif
+
 		if ( lowbatt ) hyst = HYST;
 		else hyst = 0.0f;
 		
@@ -253,6 +314,7 @@ vbatt = battadc;
 
 		  if (rxmode != RX_MODE_BIND)
 		    {		// non bind                    
+
 			    if (failsafe)
 			      {
 				      if (lowbatt)
@@ -278,7 +340,12 @@ vbatt = battadc;
 							  ledflash(100000, 8);
 						  }
 						else
-							ledon(255);
+						{
+							if ( aux[LEDS_ON] )
+							ledon( 255);
+							else 
+							ledoff( 255);
+						}
 					}
 			      }
 		    }
@@ -287,18 +354,29 @@ vbatt = battadc;
 			    ledflash(100000 + 500000 * (lowbatt), 12);
 		    }
 
+// rgb strip logic   
+#if (RGB_LED_NUMBER > 0)				
+	extern void rgb_led_lvc( void);
+	rgb_led_lvc( );
+#endif
+				
+#ifdef BUZZER_ENABLE
+	buzzer();
+#endif
 
-		  checkrx();
+	checkrx();
+				
 #ifdef DEBUG
 		  elapsedtime = gettime() - maintime;
 #endif
-// loop time 1ms                
-		  while ((gettime() - maintime) < 1000)
-			  delay(10);
+					
+	// loop time 1ms                
+	while ((gettime() - maintime) < (1000 - 22) )
+			delay(10);
 
 
 
-	  }			// end loop
+	}			// end loop
 
 
 }

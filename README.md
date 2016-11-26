@@ -79,6 +79,19 @@ Read [INSTALL.md](INSTALL.md) for more information.
 ###Wiki
 http://sirdomsen.diskstation.me/dokuwiki/doku.php?id=start
 
+### 31.10.16
+* level code optimizations
+* added auto battery voltage drop calculation , enabled by default
+
+### .10.16
+* level mode drift bug fix
+* buzzer functionality added, on programming pins
+* board rotations in file sixaxis.c
+
+###16.09.16
+* High angle in level mode - up to 90 
+* Yaw fix - level mode
+
 ###21.07.16
 * updates from h101 fork
 * added extra devo channels
