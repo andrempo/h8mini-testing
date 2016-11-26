@@ -91,6 +91,7 @@ unsigned long ledcommandtime = 0;
 int lowbatt = 0;
 float vbatt = 4.2;
 float vbattfilt = 4.2;
+float vbatt_comp = 4.2;
 
 extern char aux[AUXNUMBER];
 
@@ -308,7 +309,8 @@ float min = score[0];
 		
 		if ( vbattfilt + (float) VDROP_FACTOR * thrfilt <(float) VBATTLOW + hyst ) lowbatt = 1;
 		else lowbatt = 0;
-		
+
+	vbatt_comp = vbattfilt + (float) VDROP_FACTOR * thrfilt; 	
 
 // led flash logic              
 
