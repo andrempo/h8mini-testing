@@ -86,40 +86,9 @@
 #define HEADLESSMODE CH_OFF
 
 // rates / expert mode
-// 0 - flip
-// 1 - expert
-// 2 - headfree
-// 3 - headingreturn
-// 4 - AUX1 ( gestures <<v and >>v)
-// 5 - AUX2+ (  none    )
-// 6 - Pitch trims
-// 7 - Roll trims
-// 8 - Throttle trims
-// 9 - Yaw trims
-// 10 - on always
-// 11 - off always
-// CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
-// CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
-// CH_PIT_TRIM, CH_RLL_TRIM
-#define RATES CH_EXPERT
+#define RATES DEVO_CHAN_7
 
 // level / acro mode switch
-// CH_AUX1 = gestures
-// 0 - flip
-// 1 - expert
-// 2 - headfree
-// 3 - headingreturn
-// 4 - AUX1 ( gestures <<v and >>v)
-// 5 - AUX2+ (  none    )
-// 6 - Pitch trims
-// 7 - Roll trims
-// 8 - Throttle trims
-// 9 - Yaw trims
-// 10 - on always
-// 11 - off always
-// CH_ON , CH_OFF , CH_FLIP , CH_EXPERT
-// CH_HEADFREE , CH_RTH , CH_AUX1 , CH_AUX2 , CH_AUX3 , CH_AUX4
-// CH_PIT_TRIM, CH_RLL_TRIM
 #define LEVELMODE CH_RTH
 
 // channel to initiate automatic flip
@@ -139,7 +108,7 @@
 
 // Airmode keeps the PID loop stabilizing the quads orientation even at zero throttle.
 // To stop the motors on ground a switch on the remote control is necessary.
-//#define AIRMODE_HOLD_SWITCH CH_INV // DEVO_CHAN_5
+#define AIRMODE_HOLD_SWITCH DEVO_CHAN_5 // DEVO_CHAN_5
 
 
 // aux1 channel starts on if this is defined, otherwise off.
