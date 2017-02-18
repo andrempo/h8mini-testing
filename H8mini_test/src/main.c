@@ -52,6 +52,7 @@ THE SOFTWARE.
 #include "binary.h"
 #include <math.h>
 #include "hardware.h"
+#include "drv_servo.h"
 
 #include <inttypes.h>
 
@@ -77,13 +78,6 @@ void failloop(int val);
 unsigned long maintime;
 unsigned long lastlooptime;
 
-extern void loadcal(void);
-extern void imu_init(void);
-
-// max loop time for debug 
-unsigned long maxlooptime;
-
-
 int ledcommand = 0;
 unsigned long ledcommandtime = 0;
 
@@ -92,12 +86,13 @@ int lowbatt = 0;
 float vbatt = 4.2;
 float vbattfilt = 4.2;
 float vbatt_comp = 4.2;
+int random_seed = 0;
 
 extern char aux[AUXNUMBER];
 
-#ifdef DEBUG
-unsigned long elapsedtime;
-#endif
+extern void loadcal(void);
+extern void imu_init(void);
+
 
 int main(void)
 {
@@ -115,32 +110,23 @@ int main(void)
 	spi_init();
 
 	pwm_init();
-
-	pwm_set(MOTOR_FL, 0);	// FL
-	pwm_set(MOTOR_FR, 0);
-	pwm_set(MOTOR_BL, 0);	// BL
-	pwm_set(MOTOR_BR, 0);	// FR
+#ifdef SERVO_DRIVER
+    servo_init();
+#endif    
+	for (int i = 0; i <= 3; i++)
+	  {
+		  pwm_set(i, 0);
+	  }
 
 	time_init();
 
 
-#ifdef SERIAL
-	printf("\n clock source:");
-#endif
 	if (RCC_GetCK_SYSSource() == 8)
 	  {
-#ifdef SERIAL
-		  printf(" PLL \n");
-#endif
+          
 	  }
 	else
 	  {
-#ifdef SERIAL
-		  if (RCC_GetCK_SYSSource() == 0)
-			  printf(" HSI \n");
-		  else
-			  printf(" OTHER \n");
-#endif
 		  failloop(5);
 	  }
 
@@ -169,9 +155,13 @@ int main(void)
 
 	while (count < 64)
 	  {
-		  vbattfilt += adc_read(1);
+		  vbattfilt += adc_read(ADC_ID_VOLTAGE);
 		  count++;
 	  }
+       // for randomising MAC adddress of ble app - this will make the int = raw float value        
+		random_seed =  *(int *)&vbattfilt ; 
+		random_seed = random_seed&0xff;
+      
 	vbattfilt = vbattfilt / 64;
 
 #ifdef SERIAL
@@ -250,7 +240,7 @@ int main(void)
 // battery low logic
 				
 		float hyst;
-		float battadc = adc_read(1);
+		float battadc = adc_read(ADC_ID_VOLTAGE);
 vbatt = battadc;
 		// average of all 4 motor thrusts
 		// should be proportional with battery current			
@@ -306,17 +296,18 @@ float min = score[0];
 
 		if ( lowbatt ) hyst = HYST;
 		else hyst = 0.0f;
-		
-		if ( vbattfilt + (float) VDROP_FACTOR * thrfilt <(float) VBATTLOW + hyst ) lowbatt = 1;
-		else lowbatt = 0;
 
-	vbatt_comp = vbattfilt + (float) VDROP_FACTOR * thrfilt; 	
+		vbatt_comp = vbattfilt + (float) VDROP_FACTOR * thrfilt;
+
+		if ( vbatt_comp <(float) VBATTLOW + hyst ) lowbatt = 1;
+		else lowbatt = 0;
+		
 
 // led flash logic              
 
 		  if (rxmode != RX_MODE_BIND)
-		    {		// non bind                    
-
+		    {
+					// non bind                    
 			    if (failsafe)
 			      {
 				      if (lowbatt)
@@ -366,11 +357,26 @@ float min = score[0];
 	buzzer();
 #endif
 
+#ifdef SERVO_DRIVER
+servo_timer_loop( );
+#endif
+            
+#ifdef FPV_ON
+			static int fpv_init = 0;
+			if ( rxmode == RX_MODE_NORMAL && ! fpv_init ) {
+				fpv_init = gpio_init_fpv();
+			}
+			if ( fpv_init ) {
+				if ( failsafe ) {
+					GPIO_WriteBit( FPV_PIN_PORT, FPV_PIN, Bit_RESET );
+				} else {
+					GPIO_WriteBit( FPV_PIN_PORT, FPV_PIN, aux[ FPV_ON ] ? Bit_SET : Bit_RESET );
+				}
+			}
+#endif
+
 	checkrx();
 				
-#ifdef DEBUG
-		  elapsedtime = gettime() - maintime;
-#endif
 					
 	// loop time 1ms                
 	while ((gettime() - maintime) < (1000 - 22) )

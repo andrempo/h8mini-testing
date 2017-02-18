@@ -8,10 +8,11 @@
 
 #define APIDNUMBER 3
 
-//                   						 ANGLE PIDS      
+//                   						 ANGLE PIDS
 // yaw is done by the rate yaw pid
-// Kp                       ROLL     PITCH    YAW
+// Kp              	         ROLL     PITCH    YAW
 //float apidkp[APIDNUMBER] = { 2.2e-2, 2.2e-2, 0e-1 };
+
 
 // Ki                        ROLL     PITCH    YAW
 //float apidki[APIDNUMBER] = { 1.0e-2, 1.0e-2, 0e-1 };   
@@ -41,7 +42,7 @@ float apid(int x)
 
 	if (onground)
 	  {
-		  aierror[x] *= 0.8f;
+		  aierror[x] *= 0.98f; // 50 ms time-constant
 	  }
 	// anti windup
 	// prevent integral increase if output is at max
@@ -64,10 +65,10 @@ float apid(int x)
 	// P term
 	apidoutput[x] = angleerror[x] * apidkp[x];
 
-	// I term       
+	// I term
 	apidoutput[x] += aierror[x];
 
-		
+
 	limitf(&apidoutput[x], OUTLIMIT_FLOAT);
 
 
