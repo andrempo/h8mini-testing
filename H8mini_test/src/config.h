@@ -11,7 +11,7 @@
 
 // rate in deg/sec
 // for low rates ( acro mode)
-#define MAX_RATE 180.0f
+#define MAX_RATE 720.0f
 #define MAX_RATEYAW 180.0f
 
 // multiplier for high rates
@@ -97,7 +97,7 @@
 #define HEADLESSMODE CH_OFF
 
 // rates / expert mode
-#define RATES CH_EXPERT
+#define RATES DEVO_CHAN_7
 
 // level / acro mode switch
 #define LEVELMODE CH_RTH
@@ -120,7 +120,7 @@
 
 // Airmode keeps the PID loop stabilizing the quads orientation even at zero throttle.
 // To stop the motors on ground a switch on the remote control is necessary.
-//#define AIRMODE_HOLD_SWITCH CH_INV // DEVO_CHAN_5
+#define AIRMODE_HOLD_SWITCH CH_INV // DEVO_CHAN_5
 
 
 // aux1 channel starts on if this is defined, otherwise off.
