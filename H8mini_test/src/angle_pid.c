@@ -11,7 +11,7 @@
 //                   						 ANGLE PIDS      
 // yaw is done by the rate yaw pid
 // Kp                       ROLL     PITCH    YAW
-float apidkp[APIDNUMBER] = { 2.2e-2, 2.2e-2, 0e-1 };
+float apidkp[APIDNUMBER] = { 1.5e-2, 1.5e-2, 1.2e-3 };
 
 // Ki                        ROLL     PITCH    YAW
 float apidki[APIDNUMBER] = { 1.0e-2, 1.0e-2, 0e-1 };   
