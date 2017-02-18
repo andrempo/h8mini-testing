@@ -86,6 +86,14 @@ void control(void)
 	float maxangle;
 	float anglerate;
 
+
+#ifdef TOGGLE_IN
+if ( auxchange[TOGGLE_IN] && !aux[TOGGLE_IN] )
+{
+   ledcommand = 1;
+aux[TOGGLE_OUT]=!aux[TOGGLE_OUT];
+}
+#endif
 	if (aux[RATES])
 	  {
 		  ratemulti = HIRATEMULTI;
@@ -109,6 +117,18 @@ void control(void)
 		#else
 		rxcopy[i] = rx[i];
 		#endif
+
+#ifdef STICKS_DEADBAND
+		if ( fabsf( rxcopy[ i ] ) <= STICKS_DEADBAND ) {
+			rxcopy[ i ] = 0.0f;
+		} else {
+			if ( rxcopy[ i ] >= 0 ) {
+				rxcopy[ i ] = mapf( rxcopy[ i ], STICKS_DEADBAND, 1, 0, 1 );
+			} else {
+				rxcopy[ i ] = mapf( rxcopy[ i ], -STICKS_DEADBAND, -1, 0, -1 );
+			}
+		}
+#endif
 	  }
 
 		
@@ -130,13 +150,13 @@ void control(void)
 	if ((aux[HEADLESSMODE]) )
 	  {
 		yawangle = yawangle + gyro[2] * looptime;
-			
+
 		while (yawangle < -3.14159265f)
     yawangle += 6.28318531f;
 
     while (yawangle >  3.14159265f)
     yawangle -= 6.28318531f;
-		
+
 		float temp = rxcopy[0];
 		rxcopy[0] = rxcopy[0] * fastcos( yawangle) - rxcopy[1] * fastsin(yawangle );
 		rxcopy[1] = rxcopy[1] * fastcos( yawangle) + temp * fastsin(yawangle ) ;
@@ -157,7 +177,7 @@ void control(void)
 			    gyro_cal();	// for flashing lights
 			    acc_cal();
 			    savecal();
-			    // reset loop time 
+			    // reset loop time
 			    extern unsigned lastlooptime;
 			    lastlooptime = gettime();
 		    }
@@ -172,6 +192,10 @@ void control(void)
 			    if (command == 1)
 			      {
 				      aux[CH_AUX1] = 0;
+			      }
+					if (command == 4)
+			      {
+				      aux[CH_AUX2] = !aux[CH_AUX2];
 			      }
 		    }
 	  }
@@ -214,7 +238,7 @@ void control(void)
 			error[i] = apid(i) * anglerate * DEGTORAD + yawerror[i] - gyro[i];
 			}
 
-			error[2] = yawerror[2]  - gyro[2];
+		error[2] = yawerror[2]  - gyro[2];
 
 	  }
 	else
@@ -227,7 +251,7 @@ void control(void)
 			
 		  // reduce angle Iterm towards zero
 		  extern float aierror[3];
-			
+
 		  aierror[0] = 0.0f;
 			aierror[1] = 0.0f;
 
@@ -248,12 +272,18 @@ void control(void)
 		throttle = 1.0f;
 
 
+#ifdef AIRMODE_HOLD_SWITCH
+	if (failsafe || aux[AIRMODE_HOLD_SWITCH] || throttle < 0.001f && !onground_long)
+	{
+		onground_long = 0;
+#else
 // turn motors off if throttle is off and pitch / roll sticks are centered
-	if (failsafe || (throttle < 0.001f && ( !ENABLESTIX || !onground_long || aux[LEVELMODE] || level_override || (fabsf(rx[0]) < (float) ENABLESTIX_TRESHOLD && fabsf(rx[1]) < (float) ENABLESTIX_TRESHOLD))))
+	if (failsafe || (throttle < 0.001f && ( !ENABLESTIX || !onground_long || aux[LEVELMODE] || level_override || (fabsf(rx[0]) < (float) ENABLESTIX_TRESHOLD && fabsf(rx[1]) < (float) ENABLESTIX_TRESHOLD && fabsf(rx[2]) < (float) ENABLESTIX_TRESHOLD ))))
 	  {			// motors off
-		
+#endif
+
 		onground = 1;
-			
+
 		if ( onground_long )
 		{
 			if ( gettime() - onground_long > 1000000)
@@ -266,7 +296,7 @@ void control(void)
 		extern void motorbeep( void);
 		motorbeep();
 		#endif
-		
+
 		  thrsum = 0;
 		  for (int i = 0; i <= 3; i++)
 		    {
@@ -296,7 +326,7 @@ void control(void)
 					if ( rx[i] == lastrx[i] )
 						{
 						  consecutive[i]++;
-							
+
 						}
 					else consecutive[i] = 0;
 					lastrx[i] = rx[i];
@@ -305,7 +335,8 @@ void control(void)
 							autocenter[i] = rx[i];
 						}
 				}
-#endif				
+#endif
+
 // end motors off / failsafe / onground
 	  }
 	else
@@ -313,7 +344,7 @@ void control(void)
 // motors on - normal flight
 
 		onground_long = gettime();
-			
+
 #ifdef 	THROTTLE_TRANSIENT_COMPENSATION
 		  throttle += 7.0f * throttlehpf(throttle);
 		  if (throttle < 0)
@@ -361,9 +392,9 @@ if (vbatt < (float) LVC_PREVENT_RESET_VOLTAGE) throttle = 0;
 #endif
 
 		  mix[MOTOR_FR] = throttle - pidoutput[0] - pidoutput[1] + pidoutput[2];	// FR
-		  mix[MOTOR_FL] = throttle + pidoutput[0] - pidoutput[1] - pidoutput[2];	// FL   
+		  mix[MOTOR_FL] = throttle + pidoutput[0] - pidoutput[1] - pidoutput[2];	// FL
 		  mix[MOTOR_BR] = throttle - pidoutput[0] + pidoutput[1] - pidoutput[2];	// BR
-		  mix[MOTOR_BL] = throttle + pidoutput[0] + pidoutput[1] + pidoutput[2];	// BL   
+		  mix[MOTOR_BL] = throttle + pidoutput[0] + pidoutput[1] + pidoutput[2];	// BL
 
 
 #ifdef INVERT_YAW_PID
@@ -384,9 +415,9 @@ if (vbatt < (float) LVC_PREVENT_RESET_VOLTAGE) throttle = 0;
 //#define MIX_THROTTLE_FILTER_LPF
 
 // limit reduction and increase to this amount ( 0.0 - 1.0)
-// 0.0 = no action 
-// 0.5 = reduce up to 1/2 throttle      
-//1.0 = reduce all the way to zero 
+// 0.0 = no action
+// 0.5 = reduce up to 1/2 throttle
+// 1.0 = reduce all the way to zero
 #ifndef MIX_THROTTLE_REDUCTION_MAX
 #define MIX_THROTTLE_REDUCTION_MAX 0.5
 #endif
@@ -402,11 +433,11 @@ if (vbatt < (float) LVC_PREVENT_RESET_VOLTAGE) throttle = 0;
 
 		  float overthrottle = 0;
 			float underthrottle = 0.001f;
-		
+
 		  for (int i = 0; i < 4; i++)
 		    {
 			    if (mix[i] > overthrottle)
-				    overthrottle = mix[i];
+				    overthrottle = mix[i];               
 					if (mix[i] < underthrottle)
 						underthrottle = mix[i];
 		    }
@@ -427,33 +458,33 @@ if (vbatt < (float) LVC_PREVENT_RESET_VOLTAGE) throttle = 0;
 		  else
 			  overthrottlefilt -= 0.01f;
 #endif
-			
-			// over			
+
+			// over
 		  if (overthrottlefilt > (float)MIX_THROTTLE_REDUCTION_MAX)
 			  overthrottlefilt = (float)MIX_THROTTLE_REDUCTION_MAX;
 		  if (overthrottlefilt < -0.1f)
 			  overthrottlefilt = -0.1;
 
 		  overthrottle = overthrottlefilt;
-			
+
 		  if (overthrottle < 0.0f)
 			  overthrottle = -0.0001f;
-		
+
 			// reduce by a percentage only, so we get an inbetween performance
 			overthrottle *= ((float)MIX_THROTTLE_REDUCTION_PERCENT / 100.0f);
 
 #ifndef MIX_LOWER_THROTTLE
 	// disable if not enabled
 	overthrottle = -0.0001f;
-#endif		
-		
-			
+#endif
+
+
 #ifdef MIX_INCREASE_THROTTLE
-// under			
-			
+// under
+
 		  if (underthrottle < -(float)MIX_THROTTLE_INCREASE_MAX)
 			  underthrottle = -(float)MIX_THROTTLE_INCREASE_MAX;
-			
+
 #ifdef MIX_THROTTLE_FILTER_LPF
 		  if (underthrottle < underthrottlefilt)
 			  lpf(&underthrottlefilt, underthrottle, 0.82);	// 20hz 1khz sample rate
@@ -472,15 +503,17 @@ if (vbatt < (float) LVC_PREVENT_RESET_VOLTAGE) throttle = 0;
 			  underthrottlefilt = 0.1;
 
 			underthrottle = underthrottlefilt;
-					
+
 			if (underthrottle > 0.0f)
 			  underthrottle = 0.0001f;
 
 			underthrottle *= ((float)MIX_THROTTLE_REDUCTION_PERCENT / 100.0f);
-			
-#endif			
-	
-			
+
+#else
+    underthrottle = 0.001f;        
+#endif
+
+
 		  if (overthrottle > 0 || underthrottle < 0 )
 		    {		// exceeding max motor thrust
 					float temp = overthrottle + underthrottle;
