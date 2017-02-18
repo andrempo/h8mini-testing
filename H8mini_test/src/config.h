@@ -9,7 +9,7 @@
 
 // rate in deg/sec
 // for low rates ( acro mode)
-#define MAX_RATE 180.0f
+#define MAX_RATE 360.0f
 #define MAX_RATEYAW 180.0f
 
 // multiplier for high rates
