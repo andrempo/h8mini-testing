@@ -567,6 +567,16 @@
               <FilePath>.\src\led.c</FilePath>
             </File>
             <File>
+              <FileName>rgb_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\rgb_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>buzzer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\buzzer.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\main.c</FilePath>
@@ -575,6 +585,16 @@
               <FileName>rx_bayang_protocol.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\rx_bayang_protocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>rx_bayang_ble.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\rx_bayang_ble.c</FilePath>
+            </File>
+            <File>
+              <FileName>rx_bayang_ble_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\rx_bayang_ble_app.c</FilePath>
             </File>
             <File>
               <FileName>sixaxis.c</FileName>
@@ -617,6 +637,11 @@
               <FilePath>.\src\pid.c</FilePath>
             </File>
             <File>
+              <FileName>stickvector.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\stickvector.c</FilePath>
+            </File>
+            <File>
               <FileName>angle_pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\angle_pid.c</FilePath>
@@ -630,6 +655,11 @@
               <FileName>config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\config.h</FilePath>
+            </File>
+            <File>
+              <FileName>hardware.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\hardware.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -652,9 +682,19 @@
               <FilePath>.\src\drv_gpio.c</FilePath>
             </File>
             <File>
+              <FileName>drv_esc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\drv_esc.c</FilePath>
+            </File>
+            <File>
               <FileName>drv_pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\drv_pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_dshot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\drv_dshot.c</FilePath>
             </File>
             <File>
               <FileName>drv_serial.c</FileName>
@@ -690,6 +730,16 @@
               <FileName>drv_fmc1.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\drv_fmc1.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_rgb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\drv_rgb.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_servo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\drv_servo.c</FilePath>
             </File>
           </Files>
         </Group>
