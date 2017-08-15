@@ -11,7 +11,7 @@
 
 // rate in deg/sec
 // for low rates ( acro mode)
-#define MAX_RATE 720.0f
+#define MAX_RATE 360.0f
 #define MAX_RATEYAW 180.0f
 
 // multiplier for high rates
@@ -58,8 +58,8 @@
 //#define SOFT_LPF_1ST_043HZ
 //#define SOFT_LPF_1ST_100HZ
 //#define SOFT_LPF_2ND_043HZ
-#define SOFT_LPF_2ND_088HZ
-//#define SOFT_LPF_4TH_088HZ
+//#define SOFT_LPF_2ND_088HZ
+#define SOFT_LPF_4TH_088HZ
 //#define SOFT_LPF_4TH_160HZ
 //#define SOFT_LPF_4TH_250HZ
 //#define SOFT_LPF_NONE
@@ -120,7 +120,7 @@
 
 // Airmode keeps the PID loop stabilizing the quads orientation even at zero throttle.
 // To stop the motors on ground a switch on the remote control is necessary.
-#define AIRMODE_HOLD_SWITCH CH_INV // DEVO_CHAN_5
+//#define AIRMODE_HOLD_SWITCH CH_INV // DEVO_CHAN_5
 
 
 // aux1 channel starts on if this is defined, otherwise off.
@@ -278,7 +278,7 @@
 
 // limit minimum motor output to a value (0.0 - 1.0)
 //#define MOTOR_MIN_ENABLE
-#define MOTOR_MIN_VALUE 0.05
+#define MOTOR_MIN_VALUE 0.10
 
 // limit max motor output to a value (0.0 - 1.0)
 //#define MOTOR_MAX_ENABLE
