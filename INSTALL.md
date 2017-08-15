@@ -8,6 +8,8 @@ See [RC Groups Thread First Post](http://www.rcgroups.com/forums/showthread.php?
 
 # Linux
 
+_Note: The newer gcc version 6.x had issues with telemetry and LVC, version 5.4.1 tested ok._
+
 For flashing on Linux, the [OpenOCD](http://openocd.org/) toolchain is used. The install instructions have been tested to work with OpenOCD 0.9.0 on Debian-based systems (Ubuntu 14.04).
 
 ## Install OpenOCD 0.9.0
@@ -57,5 +59,5 @@ openocd -s /usr/share/openocd/scripts -f /usr/share/openocd/scripts/interface/st
 
 Once the board is unlocked, the firmware can be flashed using
 ```
-openocd -f /usr/share/openocd/scripts/interface/stlink-v2.cfg -f /usr/share/openocd/scripts/target/stm32f1x.cfg -c init -c "reset halt" -c "flash write_image erase h8mini 0x08000000" -c "verify_image h8mini 0x08000000" -c "reset run" -c shutdown
+openocd -f /usr/share/openocd/scripts/interface/stlink-v2.cfg -f /usr/share/openocd/scripts/target/stm32f1x.cfg -c init -c "reset halt" -c "flash write_image erase h8mini 0x08000000" -c "verify_image h8mini 0x08000000" -c shutdown
 ```
